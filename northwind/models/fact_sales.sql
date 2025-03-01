@@ -15,7 +15,7 @@ stg_order_details as
         sum(Quantity) as quantityonorder, 
         sum(Quantity*UnitPrice) as extendedpriceamount,
         sum(Quantity*UnitPrice*Discount) as discountamount,
-        sum(Quantity*UnitPrice-Quantity*UnitPricet*Discount) as soldamount
+        sum(Quantity*UnitPrice-Quantity*UnitPrice*Discount) as soldamount
     from {{source('northwind','Order_Details')}}
     group by orderid, productid
 )
@@ -24,6 +24,7 @@ select *
 from (
     select 
         o.*,
+        od.productkey,
         od.quantityonorder,
         od.extendedpriceamount,
         od.discountamount,
